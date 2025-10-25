@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login Page</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .card {
+      background: #fff;
+      padding: 28px;
+      border-radius: 14px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      width: 360px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 12px;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .password-field {
+      position: relative;
+    }
+
+    .toggle-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 14px;
+      color: #555;
+      user-select: none;
+    }
+
+    button {
+      margin-top: 18px;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    .error { color: #cc1f1f; }
+    .success { color: #1f7d2a; }
+
+    .rules {
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .rule {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 0;
+    }
+
+    .no { color: red; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Login</h2>
+    <form id="loginForm" novalidate>
+      <label for="userid">User ID</label>
+      <input id="userid" type="text" placeholder="Enter user ID" />
+
+      <label for="password">Password</label>
+      <div class="password-field">
+        <input id="password" type="password" placeholder="Enter password" />
+        <span class="toggle-btn" id="togglePassword">👁️</span>
+      </div>
+
+      <div class="rules" id="rules">
+        <div class="rule">✖ Minimum 8 characters</div>
+        <div class="rule">✖ At least one uppercase letter (A–Z)</div>
+        <div class="rule">✖ At least one lowercase letter (a–z)</div>
+        <div class="rule">✖ At least one digit (0–9)</div>
+        <div class="rule">✖ At least one symbol (e.g. @ # $ % !)</div>
+      </div>
+
+      <button type="submit">Login</button>
+      <div id="message" class="message"></div>
+    </form>
+  </div>
+
+  <script>
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+    const message = document.getElementById('message');
+    const rulesDiv = document.getElementById('rules');
+
+    // Validation rules
+    const validators = {
+      length: pwd => /.{8,}/.test(pwd),
+      upper: pwd => /[A-Z]/.test(pwd),
+      lower: pwd => /[a-z]/.test(pwd),
+      digit: pwd => /\d/.test(pwd),
+      symbol: pwd => /[^A-Za-z0-9]/.test(pwd)
+    };
+
+    document.getElementById('loginForm').addEventListener('submit', e => {
+      e.preventDefault();
+
+      const user = document.getElementById('userid').value.trim();
+      const pwd = passwordInput.value.trim();
+
+      if (!user) {
+        message.textContent = "Please enter your user ID!";
+        message.className = "message error";
+        return;
+      }
+
+      // Check password validity
+      const allValid = Object.values(validators).every(fn => fn(pwd));
+
+      if (!allValid) {
+        message.textContent = "Invalid password format! Please follow the rules below.";
+        message.className = "message error";
+        rulesDiv.style.display = "block";
+        return;
+      }
+
+      // Success case
+      message.textContent = "Login successful! Redirecting...";
+      message.className = "message success";
+      rulesDiv.style.display = "none";
+
+      localStorage.setItem("username", user);
+      setTimeout(() => {
+        window.location.href = "welcome.html";
+      }, 1500);
+    });
+
+    // Toggle password visibility
+    togglePassword.addEventListener("click", () => {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+      togglePassword.textContent = type === "password" ? "👁️" : "🙈";
+    });
+  </script>
+</body>
+</html>

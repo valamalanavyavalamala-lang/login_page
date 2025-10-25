@@ -1,0 +1,60 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #43cea2, #185a9d);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin: 0;
+    }
+
+    p {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+
+    a {
+      margin-top: 20px;
+      background: white;
+      color: #185a9d;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="welcomeText">Hiii... Welcome!</h1>
+  <p>You have successfully logged in 🎉</p>
+  <a href="login.html" onclick="logout()">Logout</a>
+
+  <script>
+    const name = localStorage.getItem('username') || 'User';
+    document.getElementById('welcomeText').textContent = Hiii ${name}... Welcome!;
+    function logout() {
+      localStorage.removeItem('username');
+    }
+  </script>
+</body>
+</html>
